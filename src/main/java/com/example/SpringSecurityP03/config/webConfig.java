@@ -15,8 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.PublicKey;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -24,19 +22,19 @@ public class webConfig {
 
 
     @Autowired
-     private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
-        httpSecurity.authorizeHttpRequests(req->
-                req.requestMatchers("/security/aboutUs","/security/contactUs").permitAll().anyRequest().authenticated()
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
+        httpSecurity.authorizeHttpRequests(req ->
+                req.requestMatchers("/security/aboutUs", "/security/contactUs").permitAll().anyRequest().authenticated()
         ).formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
     }
 
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
-        AuthenticationManagerBuilder builder=httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
+        AuthenticationManagerBuilder builder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
 
         builder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 
@@ -44,12 +42,9 @@ public class webConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-
 
 
 }
